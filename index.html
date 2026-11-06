@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Sirius天狼</title>
+    <title>Sirius天狼 · 接稿</title>
     <style>
         /* 自定义字体 NanoTikBazHei-Bold */
         @font-face {
             font-family: 'NanoTikBazHei';
             src: url('../NanoTikBazHei-Bold.ttf') format('truetype');
-            /* 请替换为实际 raw 链接 */
             font-weight: bold;
             font-style: normal;
             font-display: swap;
@@ -49,7 +48,7 @@
             position: relative;
         }
 
-        /* 鼠标轨迹画布 — 线性渐变深蓝光带 */
+        /* 鼠标轨迹画布 — 置于最高图层，覆盖所有内容 */
         #trail-canvas {
             position: fixed;
             top: 0;
@@ -57,7 +56,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 9999;  /* 最高图层 */
         }
 
         /* 通用卡片 */
@@ -74,56 +73,53 @@
             z-index: 10;
         }
 
-        /* 顶部固定栏 */
-        .top-bar {
+        /* ========== 顶部悬浮模块：头像（左上） ========== */
+        .top-avatar-module {
             position: fixed;
             top: 16px;
             left: 16px;
-            right: 16px;
             z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 24px;
-            border-radius: var(--squircle-radius);
+            width: 68px;
+            height: 68px;
+            border-radius: 22px;
             background: rgba(30, 30, 30, 0.8);
             backdrop-filter: blur(16px) saturate(200%);
             -webkit-backdrop-filter: blur(16px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(160, 200, 232, 0.1) inset;
-        }
-
-        .icon-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-shrink: 0;
-        }
-
-        .avatar-squircle {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(145deg, #3a3a3a, #222222);
-            border-radius: 18px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
-            font-weight: 500;
-            color: var(--accent-glow);
-            box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(160, 200, 232, 0.2) inset;
-            overflow: hidden;
-            flex-shrink: 0;
         }
 
-        .avatar-squircle img {
+        .top-avatar-module img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .top-name {
+        /* ========== 顶部悬浮模块：名字（右上） ========== */
+        .top-name-module {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 100;
+            padding: 18px 28px;
+            border-radius: 22px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(16px) saturate(200%);
+            -webkit-backdrop-filter: blur(16px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(160, 200, 232, 0.1) inset;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .top-name-module .top-name {
             font-size: 1.4rem;
             font-weight: bold;
             letter-spacing: 0.5px;
@@ -133,10 +129,11 @@
             color: transparent;
             text-shadow: 0 2px 12px rgba(160, 200, 232, 0.3);
             white-space: nowrap;
+            line-height: 1.2;
         }
 
-        .artist-title {
-            font-size: 0.85rem;
+        .top-name-module .artist-title {
+            font-size: 0.8rem;
             color: var(--text-secondary);
             letter-spacing: 0.4px;
             font-weight: bold;
@@ -170,7 +167,7 @@
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding: 100px 24px 100px;
+            padding: 110px 24px 100px;
             display: flex;
             flex-direction: column;
             gap: 28px;
@@ -241,7 +238,7 @@
             width: 80px;
             height: 80px;
             border-radius: 24px;
-            background: linear-gradient(145deg, #3a3a3a, #222222);
+            background: #2a2a2a;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -326,11 +323,6 @@
             width: 100%;
             aspect-ratio: 16 / 10;
             background: #2a2a2a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
             overflow: hidden;
             position: relative;
         }
@@ -422,25 +414,27 @@
 
         /* 响应式 */
         @media (max-width: 640px) {
-            .top-bar {
-                padding: 10px 18px;
+            .top-avatar-module {
                 top: 10px;
                 left: 10px;
+                width: 56px;
+                height: 56px;
+                border-radius: 18px;
+            }
+
+            .top-name-module {
+                top: 10px;
                 right: 10px;
+                padding: 12px 18px;
+                border-radius: 18px;
             }
 
-            .avatar-squircle {
-                width: 44px;
-                height: 44px;
-                border-radius: 14px;
-            }
-
-            .top-name {
+            .top-name-module .top-name {
                 font-size: 1.15rem;
             }
 
-            .artist-title {
-                font-size: 0.75rem;
+            .top-name-module .artist-title {
+                font-size: 0.7rem;
             }
 
             .bottom-bar {
@@ -452,7 +446,7 @@
             }
 
             .main-content {
-                padding: 82px 16px 82px;
+                padding: 90px 16px 82px;
                 gap: 18px;
             }
 
@@ -523,19 +517,19 @@
     </style>
 </head>
 <body>
-    <!-- 鼠标轨迹画布 -->
+    <!-- 鼠标轨迹画布：置于最高图层 -->
     <canvas id="trail-canvas"></canvas>
 
-    <header class="top-bar">
-        <div class="icon-wrapper">
-            <div class="avatar-squircle">
-                <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/天狼头像.jpg" alt="天狼头像"
-                     onerror="this.style.display='none'; this.parentElement.textContent='🐺';">
-            </div>
-            <div class="top-name">Sirius天狼</div>
-        </div>
+    <!-- 左上角头像悬浮模块（独立） -->
+    <div class="top-avatar-module">
+        <img src="../天狼头像.jpg" alt="天狼头像">
+    </div>
+
+    <!-- 右上角名字悬浮模块（独立） -->
+    <div class="top-name-module">
+        <div class="top-name">Sirius天狼</div>
         <div class="artist-title">插画师 / 角色设计</div>
-    </header>
+    </div>
 
     <main class="main-content">
         <!-- 模块一 -->
@@ -547,8 +541,7 @@
             </div>
             <div class="intro-header">
                 <div class="intro-avatar">
-                    <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/天狼头像.jpg" alt="天狼头像"
-                         onerror="this.style.display='none'; this.parentElement.textContent='🐺';">
+                    <img src="../天狼头像.jpg" alt="天狼头像">
                 </div>
                 <div class="intro-name">Sirius天狼</div>
             </div>
@@ -568,29 +561,25 @@
             <div class="service-grid">
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/角色设计.jpg" alt="角色设计"
-                             onerror="this.style.display='none'; this.parentElement.textContent='角色设计';">
+                        <img src="../天狼头像.jpg" alt="角色设计">
                     </div>
                     <div class="service-label">角色设计</div>
                 </div>
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/半身插画.jpg" alt="半身插画"
-                             onerror="this.style.display='none'; this.parentElement.textContent='半身插画';">
+                        <img src="../天狼头像.jpg" alt="半身插画">
                     </div>
                     <div class="service-label">半身插画</div>
                 </div>
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/场景概念.jpg" alt="场景概念"
-                             onerror="this.style.display='none'; this.parentElement.textContent='场景概念';">
+                        <img src="../天狼头像.jpg" alt="场景概念">
                     </div>
                     <div class="service-label">场景概念</div>
                 </div>
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/封面插图.jpg" alt="封面插图"
-                             onerror="this.style.display='none'; this.parentElement.textContent='封面插图';">
+                        <img src="../天狼头像.jpg" alt="封面插图">
                     </div>
                     <div class="service-label">封面插图</div>
                 </div>
@@ -610,8 +599,7 @@
             <div class="price-list">
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/头像价格.jpg" alt="头像"
-                             onerror="this.style.display='none'; this.parentElement.textContent='🖼️';">
+                        <img src="../天狼头像.jpg" alt="头像">
                     </div>
                     <div class="price-info">
                         <span class="price-label">头像 / 半身</span>
@@ -620,8 +608,7 @@
                 </div>
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/全身立绘.jpg" alt="全身立绘"
-                             onerror="this.style.display='none'; this.parentElement.textContent='🧍';">
+                        <img src="../天狼头像.jpg" alt="全身立绘">
                     </div>
                     <div class="price-info">
                         <span class="price-label">全身立绘</span>
@@ -630,8 +617,7 @@
                 </div>
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/三视图.jpg" alt="角色设计三视图"
-                             onerror="this.style.display='none'; this.parentElement.textContent='📐';">
+                        <img src="../天狼头像.jpg" alt="角色设计三视图">
                     </div>
                     <div class="price-info">
                         <span class="price-label">角色设计（三视图）</span>
@@ -640,8 +626,7 @@
                 </div>
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="https://raw.githubusercontent.com/你的用户名/你的仓库名/main/场景价格.jpg" alt="场景/封面"
-                             onerror="this.style.display='none'; this.parentElement.textContent='🌄';">
+                        <img src="../天狼头像.jpg" alt="场景/封面">
                     </div>
                     <div class="price-info">
                         <span class="price-label">场景 / 封面</span>
@@ -661,12 +646,12 @@
 
     <script>
         (function() {
-            // ========== 线性渐变深蓝色轨迹 ==========
+            // ========== 线性渐变深蓝色轨迹（最高图层） ==========
             const canvas = document.getElementById('trail-canvas');
             const ctx = canvas.getContext('2d');
-            const points = [];                 // 存储轨迹点 {x, y, age}
-            const MAX_AGE = 55;                // 轨迹点最大存活帧数 (越大拖尾越长)
-            const MAX_POINTS = 22;             // 最多存储点数，控制性能
+            const points = [];
+            const MAX_AGE = 55;
+            const MAX_POINTS = 22;
             let mouseX = -1000, mouseY = -1000;
             let lastX = null, lastY = null;
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -687,14 +672,12 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
 
-            // 添加轨迹点 (带时间戳)
             function addPoint(x, y) {
-                // 如果移动距离过小，跳过，减少点数
                 if (lastX !== null && lastY !== null) {
                     const dx = x - lastX;
                     const dy = y - lastY;
                     const dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 3) return; // 距离太近不添加
+                    if (dist < 3) return;
                 }
                 points.push({ x, y, age: 0 });
                 if (points.length > MAX_POINTS) points.shift();
@@ -702,7 +685,6 @@
                 lastY = y;
             }
 
-            // 更新鼠标位置并记录轨迹
             function updateMousePosition(e) {
                 if (e.touches) {
                     const touch = e.touches[0];
@@ -717,51 +699,34 @@
                 updateCardShadows(mouseX, mouseY);
             }
 
-            // 绘制线性渐变的深蓝色光带
             function drawTrail() {
                 const w = window.innerWidth;
                 const h = window.innerHeight;
                 ctx.clearRect(0, 0, w, h);
 
-                // 如果点数少于2，直接跳过绘制线条，但可以让最后一个点产生光晕? 不需要，要求线性轨迹，点少则无轨迹
                 if (points.length < 2) {
-                    // 让age增加，然后过滤
                     for (let i = 0; i < points.length; i++) points[i].age++;
-                    // 移除太老的
                     while (points.length > 0 && points[0].age > MAX_AGE) points.shift();
                     requestAnimationFrame(drawTrail);
                     return;
                 }
 
-                // 1. 先绘制连接线段，使用线性渐变颜色 (深蓝色，随距离变淡)
-                // 绘制每条线段，并使用渐变：靠近最新点 (末端) 颜色深，远离变淡
                 for (let i = 0; i < points.length - 1; i++) {
                     const p1 = points[i];
                     const p2 = points[i + 1];
 
-                    // 计算两个点的新鲜度 (最新点索引大，age小；越老的age越大)
-                    // 这里根据索引和age共同决定透明度：越靠近最新点 (i越大) 越不透明
-                    // 同时根据age衰减
-                    const ratio1 = i / points.length;           // 0 ~ 1, 越大越新
+                    const ratio1 = i / points.length;
                     const ratio2 = (i + 1) / points.length;
-
-                    // 基础透明度: 新点透明度高，老点透明度低，但整体要淡且渐变
-                    // 使用 age 来进一步衰减: 每个点age不同，取平均age做衰减
                     const avgAge = (p1.age + p2.age) / 2;
-                    const ageFactor = Math.max(0, 1 - avgAge / MAX_AGE); // 1 -> 0
+                    const ageFactor = Math.max(0, 1 - avgAge / MAX_AGE);
 
-                    // 每个线段的透明度：结合位置和age
-                    const alpha1 = ratio1 * 0.45 * ageFactor;    // 老点端
-                    const alpha2 = ratio2 * 0.45 * ageFactor;    // 新点端
+                    const alpha1 = ratio1 * 0.45 * ageFactor;
+                    const alpha2 = ratio2 * 0.45 * ageFactor;
 
-                    // 深蓝色 #1a2b4a 到 #2a4a7a (深蓝偏亮一点)
-                    // 使用渐变使线条有方向性: 从p1到p2渐变
                     const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
-                    // 越靠近p2(新点)越不透明，颜色也稍微亮一点
-                    gradient.addColorStop(0, `rgba(26, 43, 74, ${alpha1})`);   // 深蓝
-                    gradient.addColorStop(1, `rgba(42, 74, 122, ${alpha2})`);  // 稍亮的深蓝
+                    gradient.addColorStop(0, `rgba(26, 43, 74, ${alpha1})`);
+                    gradient.addColorStop(1, `rgba(42, 74, 122, ${alpha2})`);
 
-                    // 线条宽度随位置变化，新点略粗
                     const lineWidth = 4.5 * (0.5 + ratio2 * 0.8) * (0.6 + ageFactor * 0.6);
 
                     ctx.beginPath();
@@ -774,7 +739,6 @@
                     ctx.stroke();
                 }
 
-                // 2. 在最新点位置绘制一个柔和的光晕（深蓝色径向渐变），增强触感
                 const latest = points[points.length - 1];
                 if (latest && latest.age < MAX_AGE) {
                     const glowSize = 22 * (1 - latest.age / MAX_AGE);
@@ -788,22 +752,16 @@
                     ctx.fill();
                 }
 
-                // 增加所有点的age，并移除超过MAX_AGE的点
-                for (let i = 0; i < points.length; i++) {
-                    points[i].age++;
-                }
-                while (points.length > 0 && points[0].age > MAX_AGE) {
-                    points.shift();
-                }
+                for (let i = 0; i < points.length; i++) points[i].age++;
+                while (points.length > 0 && points[0].age > MAX_AGE) points.shift();
 
                 requestAnimationFrame(drawTrail);
             }
 
-            // 启动绘制循环
             drawTrail();
 
             // ========== 卡片阴影动态效果 ==========
-            const cards = document.querySelectorAll('.module-card, .top-bar, .bottom-bar');
+            const cards = document.querySelectorAll('.module-card, .top-avatar-module, .top-name-module, .bottom-bar');
 
             function updateCardShadows(mx, my) {
                 cards.forEach(card => {
@@ -827,7 +785,6 @@
                 });
             }
 
-            // 事件监听
             window.addEventListener('mousemove', (e) => {
                 if (!isTouchDevice) updateMousePosition(e);
             });
@@ -864,7 +821,6 @@
 
             animateElements.forEach(el => observer.observe(el));
 
-            // 兜底：滚动监听
             let scrollTriggered = false;
             window.addEventListener('scroll', () => {
                 if (scrollTriggered || !introCard) return;
