@@ -8,7 +8,7 @@
         /* 自定义字体 NanoTikBazHei-Bold */
         @font-face {
             font-family: 'NanoTikBazHei';
-            src: url('../NanoTikBazHei-Bold.ttf') format('truetype');
+            src: url('NanoTikBazHei-Bold.ttf') format('truetype');
             font-weight: bold;
             font-style: normal;
             font-display: swap;
@@ -525,7 +525,7 @@
 
     <!-- 左上角头像悬浮模块（独立） -->
     <div class="top-avatar-module">
-        <img src="../天狼头像.jpg" alt="天狼头像">
+        <img src="天狼头像.jpg" alt="天狼头像">
     </div>
 
     <!-- 右上角名字悬浮模块（独立） -->
@@ -537,7 +537,7 @@
     <!-- ========== 首屏个人介绍（无背景卡片） ========== -->
     <section class="hero-section">
         <div class="hero-avatar">
-            <img src="../天狼头像.jpg" alt="天狼头像">
+            <img src="天狼头像.jpg" alt="天狼头像">
         </div>
         <div class="hero-name">Sirius天狼</div>
         <div class="hero-sub">插画师 / 角色设计</div>
@@ -559,25 +559,25 @@
             <div class="service-grid">
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="../天狼头像.jpg" alt="角色设计">
+                        <img src="天狼头像.jpg" alt="角色设计">
                     </div>
                     <div class="service-label">角色设计</div>
                 </div>
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="../天狼头像.jpg" alt="半身插画">
+                        <img src="天狼头像.jpg" alt="半身插画">
                     </div>
                     <div class="service-label">半身插画</div>
                 </div>
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="../天狼头像.jpg" alt="场景概念">
+                        <img src="天狼头像.jpg" alt="场景概念">
                     </div>
                     <div class="service-label">场景概念</div>
                 </div>
                 <div class="service-item">
                     <div class="service-image">
-                        <img src="../天狼头像.jpg" alt="封面插图">
+                        <img src="天狼头像.jpg" alt="封面插图">
                     </div>
                     <div class="service-label">封面插图</div>
                 </div>
@@ -597,7 +597,7 @@
             <div class="price-list">
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="../天狼头像.jpg" alt="头像">
+                        <img src="天狼头像.jpg" alt="头像">
                     </div>
                     <div class="price-info">
                         <span class="price-label">头像 / 半身</span>
@@ -606,7 +606,7 @@
                 </div>
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="../天狼头像.jpg" alt="全身立绘">
+                        <img src="天狼头像.jpg" alt="全身立绘">
                     </div>
                     <div class="price-info">
                         <span class="price-label">全身立绘</span>
@@ -615,7 +615,7 @@
                 </div>
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="../天狼头像.jpg" alt="角色设计三视图">
+                        <img src="天狼头像.jpg" alt="角色设计三视图">
                     </div>
                     <div class="price-info">
                         <span class="price-label">角色设计（三视图）</span>
@@ -624,7 +624,7 @@
                 </div>
                 <div class="price-row">
                     <div class="price-icon">
-                        <img src="../天狼头像.jpg" alt="场景/封面">
+                        <img src="天狼头像.jpg" alt="场景/封面">
                     </div>
                     <div class="price-info">
                         <span class="price-label">场景 / 封面</span>
@@ -801,9 +801,7 @@
 
             function checkBioReveal() {
                 if (bioRevealed || !heroBio) return;
-                // 当页面滚动超过一定距离（例如首屏头像区域部分滚出），简介淡入
                 const scrollY = window.scrollY || window.pageYOffset;
-                // 触发阈值：滚动超过 120px 即可显示简介
                 if (scrollY > 120) {
                     heroBio.classList.add('revealed');
                     bioRevealed = true;
@@ -811,31 +809,7 @@
             }
 
             window.addEventListener('scroll', checkBioReveal, { passive: true });
-            // 初始检查（如果刷新时已在滚动位置）
             window.addEventListener('load', checkBioReveal);
-
-            // 同时保留 IntersectionObserver 作为备选，确保在移动端等场景也能触发
-            if ('IntersectionObserver' in window) {
-                const bioObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting && !bioRevealed) {
-                            heroBio.classList.add('revealed');
-                            bioRevealed = true;
-                        }
-                    });
-                }, {
-                    threshold: 0.3,
-                    rootMargin: '0px 0px -80px 0px'
-                });
-                // 观察 hero-bio 的父元素或自身，这里观察 hero 区域底部
-                const heroSection = document.querySelector('.hero-section');
-                if (heroSection) {
-                    // 观察 hero 区域底部的占位（使用 hero-bio 的父元素？直接观察 hero-section 底部是否进入）
-                    // 为了平滑，观察 hero-bio 本身，但它是隐藏的，所以观察 hero-sub 或 hero-section 的底部
-                    // 改为观察 hero-section，当它滚动一部分后触发
-                }
-                // 简化：使用滚动监听已足够，也可不启用observer。
-            }
 
             // ========== 下方模块滚动入场动画 ==========
             const animateElements = document.querySelectorAll('.animate-on-scroll');
