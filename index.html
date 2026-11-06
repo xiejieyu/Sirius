@@ -48,7 +48,7 @@
             position: relative;
         }
 
-        /* 鼠标轨迹画布 — 置于最高图层，覆盖所有内容 */
+        /* 鼠标轨迹画布 — 最高图层 */
         #trail-canvas {
             position: fixed;
             top: 0;
@@ -56,21 +56,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 9999;  /* 最高图层 */
-        }
-
-        /* 通用卡片 */
-        .squircle-card, .top-bar, .bottom-bar {
-            background: rgba(30, 30, 30, 0.82);
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: var(--shadow-diffuse);
-            border-radius: var(--squircle-radius);
-            position: relative;
-            overflow: hidden;
-            transition: box-shadow 0.2s ease, transform 0.1s ease;
-            z-index: 10;
+            z-index: 9999;
         }
 
         /* ========== 顶部悬浮模块：头像（左上） ========== */
@@ -161,13 +147,92 @@
             font-weight: bold;
         }
 
-        /* 主内容区域 */
+        /* ========== 首屏个人介绍区域（无背景卡片，滚动淡入简介） ========== */
+        .hero-section {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 140px 24px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 38px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(160, 200, 232, 0.15) inset;
+            margin-bottom: 24px;
+            transition: transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-name {
+            font-size: 2.6rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ffffff, #b8d4f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 24px rgba(160, 200, 232, 0.35);
+            margin-bottom: 8px;
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-bottom: 0;
+        }
+
+        /* 简介文字：默认隐藏，向下滑动后淡入 */
+        .hero-bio {
+            max-width: 720px;
+            margin-top: 0;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: opacity 1s ease, max-height 1s cubic-bezier(0.2, 0.9, 0.3, 1), transform 1s cubic-bezier(0.2, 0.9, 0.3, 1);
+            color: var(--text-primary);
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        .hero-bio.revealed {
+            opacity: 1;
+            max-height: 500px;
+            transform: translateY(0);
+            margin-top: 36px;
+        }
+
+        .hero-bio p {
+            margin-bottom: 14px;
+        }
+
+        .hero-bio p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 下方内容区域 */
         .main-content {
             flex: 1;
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding: 110px 24px 100px;
+            padding: 20px 24px 100px;
             display: flex;
             flex-direction: column;
             gap: 28px;
@@ -223,78 +288,6 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(160, 200, 232, 0.5), transparent);
             min-width: 30px;
-        }
-
-        /* 第一模块 */
-        .intro-header {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin-bottom: 24px;
-            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-
-        .intro-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 24px;
-            background: #2a2a2a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(160, 200, 232, 0.2) inset;
-            flex-shrink: 0;
-            transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.4s ease;
-            overflow: hidden;
-        }
-
-        .intro-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .intro-name {
-            font-size: 1.8rem;
-            font-weight: bold;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #ffffff, #b8d4f0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 12px rgba(160, 200, 232, 0.3);
-            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-
-        .intro-bio {
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: opacity 0.5s ease 0.2s, max-height 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
-            color: var(--text-primary);
-            line-height: 1.7;
-            font-size: 1.05rem;
-        }
-
-        .intro-card.interacted .intro-header {
-            transform: translateX(-10px);
-            gap: 16px;
-        }
-
-        .intro-card.interacted .intro-avatar {
-            transform: scale(0.85);
-            opacity: 0.8;
-        }
-
-        .intro-card.interacted .intro-name {
-            font-size: 1.3rem;
-            opacity: 0.9;
-        }
-
-        .intro-card.interacted .intro-bio {
-            opacity: 1;
-            max-height: 300px;
         }
 
         /* 业务网格 */
@@ -445,8 +438,32 @@
                 right: 10px;
             }
 
+            .hero-section {
+                padding: 110px 16px 40px;
+            }
+
+            .hero-avatar {
+                width: 100px;
+                height: 100px;
+                border-radius: 30px;
+            }
+
+            .hero-name {
+                font-size: 2rem;
+            }
+
+            .hero-sub {
+                font-size: 0.85rem;
+                letter-spacing: 1.5px;
+            }
+
+            .hero-bio {
+                font-size: 0.95rem;
+                line-height: 1.8;
+            }
+
             .main-content {
-                padding: 90px 16px 82px;
+                padding: 10px 16px 82px;
                 gap: 18px;
             }
 
@@ -458,20 +475,6 @@
             .module-title-centered .title-text {
                 font-size: 0.95rem;
                 letter-spacing: 2px;
-            }
-
-            .intro-avatar {
-                width: 64px;
-                height: 64px;
-                border-radius: 20px;
-            }
-
-            .intro-name {
-                font-size: 1.4rem;
-            }
-
-            .intro-card.interacted .intro-name {
-                font-size: 1.1rem;
             }
 
             .service-grid {
@@ -517,12 +520,12 @@
     </style>
 </head>
 <body>
-    <!-- 鼠标轨迹画布：置于最高图层 -->
+    <!-- 鼠标轨迹画布：最高图层 -->
     <canvas id="trail-canvas"></canvas>
 
     <!-- 左上角头像悬浮模块（独立） -->
     <div class="top-avatar-module">
-        <img src="天狼头像.jpg" alt="天狼头像">
+        <img src="../天狼头像.jpg" alt="天狼头像">
     </div>
 
     <!-- 右上角名字悬浮模块（独立） -->
@@ -531,27 +534,22 @@
         <div class="artist-title">插画师 / 角色设计</div>
     </div>
 
-    <main class="main-content">
-        <!-- 模块一 -->
-        <section class="module-card intro-card animate-on-scroll" id="introCard">
-            <div class="module-title-centered">
-                <div class="line"></div>
-                <div class="title-text">简介</div>
-                <div class="line"></div>
-            </div>
-            <div class="intro-header">
-                <div class="intro-avatar">
-                    <img src="天狼头像.jpg" alt="天狼头像">
-                </div>
-                <div class="intro-name">Sirius天狼</div>
-            </div>
-            <div class="intro-bio">
-                <p>你好，我是Sirius天狼，一名自由插画师与角色设计师。擅长奇幻、科幻与日系风格，注重光影氛围与角色性格表达。拥有五年接稿经验，与多家独立游戏团队合作，作品多次入选线上展览。</p>
-                <p>我相信每一次委托都是一段故事的开始，期待与你共同创作。</p>
-            </div>
-        </section>
+    <!-- ========== 首屏个人介绍（无背景卡片） ========== -->
+    <section class="hero-section">
+        <div class="hero-avatar">
+            <img src="../天狼头像.jpg" alt="天狼头像">
+        </div>
+        <div class="hero-name">Sirius天狼</div>
+        <div class="hero-sub">插画师 / 角色设计</div>
+        <div class="hero-bio" id="heroBio">
+            <p>你好，我是Sirius天狼，一名自由插画师与角色设计师。擅长奇幻、科幻与日系风格，注重光影氛围与角色性格表达。拥有五年接稿经验，与多家独立游戏团队合作，作品多次入选线上展览。</p>
+            <p>我相信每一次委托都是一段故事的开始，期待与你共同创作。</p>
+        </div>
+    </section>
 
-        <!-- 模块二 -->
+    <!-- 下方内容 -->
+    <main class="main-content">
+        <!-- 模块二：擅长业务 -->
         <section class="module-card animate-on-scroll">
             <div class="module-title-centered">
                 <div class="line"></div>
@@ -589,7 +587,7 @@
             </p>
         </section>
 
-        <!-- 模块三 -->
+        <!-- 模块三：接稿价格 -->
         <section class="module-card animate-on-scroll">
             <div class="module-title-centered">
                 <div class="line"></div>
@@ -797,43 +795,63 @@
             window.addEventListener('mouseleave', resetCardShadows);
             window.addEventListener('blur', resetCardShadows);
 
-            // ========== 滚动入场 + 第一模块交互 ==========
+            // ========== 首屏简介：向下滑动淡入 ==========
+            const heroBio = document.getElementById('heroBio');
+            let bioRevealed = false;
+
+            function checkBioReveal() {
+                if (bioRevealed || !heroBio) return;
+                // 当页面滚动超过一定距离（例如首屏头像区域部分滚出），简介淡入
+                const scrollY = window.scrollY || window.pageYOffset;
+                // 触发阈值：滚动超过 120px 即可显示简介
+                if (scrollY > 120) {
+                    heroBio.classList.add('revealed');
+                    bioRevealed = true;
+                }
+            }
+
+            window.addEventListener('scroll', checkBioReveal, { passive: true });
+            // 初始检查（如果刷新时已在滚动位置）
+            window.addEventListener('load', checkBioReveal);
+
+            // 同时保留 IntersectionObserver 作为备选，确保在移动端等场景也能触发
+            if ('IntersectionObserver' in window) {
+                const bioObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !bioRevealed) {
+                            heroBio.classList.add('revealed');
+                            bioRevealed = true;
+                        }
+                    });
+                }, {
+                    threshold: 0.3,
+                    rootMargin: '0px 0px -80px 0px'
+                });
+                // 观察 hero-bio 的父元素或自身，这里观察 hero 区域底部
+                const heroSection = document.querySelector('.hero-section');
+                if (heroSection) {
+                    // 观察 hero 区域底部的占位（使用 hero-bio 的父元素？直接观察 hero-section 底部是否进入）
+                    // 为了平滑，观察 hero-bio 本身，但它是隐藏的，所以观察 hero-sub 或 hero-section 的底部
+                    // 改为观察 hero-section，当它滚动一部分后触发
+                }
+                // 简化：使用滚动监听已足够，也可不启用observer。
+            }
+
+            // ========== 下方模块滚动入场动画 ==========
             const animateElements = document.querySelectorAll('.animate-on-scroll');
-            const introCard = document.getElementById('introCard');
-            let introInteracted = false;
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        if (entry.target === introCard && !introInteracted) {
-                            introInteracted = true;
-                            setTimeout(() => {
-                                introCard.classList.add('interacted');
-                            }, 300);
-                        }
                     }
                 });
             }, {
-                threshold: 0.2,
-                rootMargin: '0px 0px -30px 0px'
+                threshold: 0.15,
+                rootMargin: '0px 0px -40px 0px'
             });
 
             animateElements.forEach(el => observer.observe(el));
-
-            let scrollTriggered = false;
-            window.addEventListener('scroll', () => {
-                if (scrollTriggered || !introCard) return;
-                const rect = introCard.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
-                    if (!introInteracted) {
-                        introInteracted = true;
-                        introCard.classList.add('interacted');
-                    }
-                    scrollTriggered = true;
-                }
-            }, { passive: true });
 
             window.addEventListener('load', () => {
                 animateElements.forEach(el => {
@@ -842,25 +860,7 @@
                         el.classList.add('visible');
                     }
                 });
-                if (introCard) {
-                    const rect = introCard.getBoundingClientRect();
-                    if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
-                        if (!introInteracted) {
-                            introInteracted = true;
-                            setTimeout(() => introCard.classList.add('interacted'), 300);
-                        }
-                    }
-                }
             });
-
-            if (introCard) {
-                introCard.addEventListener('click', () => {
-                    if (!introInteracted) {
-                        introInteracted = true;
-                        introCard.classList.add('interacted');
-                    }
-                });
-            }
 
             resetCardShadows();
         })();
